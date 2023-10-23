@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kekambas Blog</title>
+</head>
+<body>
+    <h1>Hello {{ first_name.upper() }} {{ last_name }} from the templates!</h1>
+    
+    {% if first_name == 'Brian' %}
+        <h3>I am from Chicago</h3>
+    {% else %}
+        <h3>Something interesting</h3>
+    {% endif %}
+
+    <p>Here are some of my favorite colors:</p>
+    <ol>
+        {% for color in colors %}
+            <li>{{ color.upper() }}</li>
+        {% endfor %}
+    </ol>
+
+</body>
+</html>
