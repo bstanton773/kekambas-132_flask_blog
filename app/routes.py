@@ -4,9 +4,7 @@ from flask import render_template
 # Create our first route
 @app.route('/')
 def index():
-    name = 'Brian'
-    colors = ['red', 'orange', 'yellow', 'green', 'blue']
-    return render_template('index.html', first_name=name, last_name='Stanton', colors=colors)
+    return render_template('index.html')
 
 # Create a second route
 @app.route('/signup')

@@ -3,18 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block header %}
-    <h1>Hello {{ first_name.upper() }} {{ last_name }}</h1>
+    <h1>Welcome to the Kekambas Blog</h1>
 {% endblock %}
 
 {% block content %}
-<p>Here are some of my favorite colors:</p>
-<ol>
-    {% for color in colors %}
-        {% if color == 'blue' %}
-            <li>{{ color.upper() }}</li>
-        {% else %}
-            <li>{{ color.lower() }}</li>
-        {% endif %}
-    {% endfor %}
-</ol>
+    <div class="col-12">
+        <h5>Posts Will Go Here</h5>
+    </div>
 {% endblock %}
