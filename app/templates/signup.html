@@ -7,11 +7,33 @@
 {% endblock %}
 
 {% block content %}
-    <form action="">
-        <label for="username">Username</label>
-        <input type="text" name="username" class="form-control" placeholder="Enter Username">
-        <label for="password">Password</label>
-        <input type="password" name="password" class="form-control" placeholder="Enter Password">
-        <input type="submit" value="Sign Up" class="btn btn-outline-primary w-100">
-    </form>
+<div class="col">
+    <div class="card mt-3">
+        <div class="card-body">
+            <form action="">
+                {{ form.first_name.label }}
+                {{ form.first_name(class='form-control', placeholder='Enter First Name') }}
+        
+                {{ form.last_name.label }}
+                {{ form.last_name(class='form-control', placeholder='Enter Last Name') }}
+        
+                {{ form.username.label }}
+                {{ form.username(class='form-control', placeholder='Enter Username') }}
+        
+                {{ form.email.label }}
+                {{ form.email(class='form-control', placeholder='Enter Email') }}
+        
+                {{ form.password.label }}
+                {{ form.password(class='form-control', placeholder='Enter Password') }}
+        
+                {{ form.confirm_pass.label }}
+                {{ form.confirm_pass(class='form-control', placeholder='Enter Password Again') }}
+        
+                {{ form.submit(class='btn btn-outline-primary w-100 mt-3') }}
+        
+            </form>
+        </div>
+    </div>
+</div>
+    
 {% endblock %}
