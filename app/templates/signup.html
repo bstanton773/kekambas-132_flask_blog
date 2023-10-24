@@ -10,7 +10,9 @@
 <div class="col">
     <div class="card mt-3">
         <div class="card-body">
-            <form action="">
+            <form action="" method="post">
+                {{ form.csrf_token }}
+        
                 {{ form.first_name.label }}
                 {{ form.first_name(class='form-control', placeholder='Enter First Name') }}
         
