@@ -7,3 +7,6 @@ __pycache__
 # ignore the .vscode folder (your personal VS Code settings)
 # .vscode/ 
 # ^^ I am keeping this commented out so you can review how I configured the launch.json for the debugger
+
+# Ignore any sqlite databases
+*.db
