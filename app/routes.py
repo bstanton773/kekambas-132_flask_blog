@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, url_for, flash
-# Import the SingUpForm class from forms
-from app.forms import SignUpForm
+# Import the SingUpForm and LoginForm class from forms
+from app.forms import SignUpForm, LoginForm
 # Import the User model from models
 from app.models import User
 
@@ -40,3 +40,10 @@ def signup():
         # Redirect back to the home page
         return redirect(url_for('index'))
     return render_template('signup.html', form=form)
+
+
+@app.route('/login')
+def login():
+    # Create an instance of the LoginForm
+    form = LoginForm()
+    return render_template('login.html', form=form)
