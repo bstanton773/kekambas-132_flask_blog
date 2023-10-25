@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 # Import the SingUpForm class from forms
 from app.forms import SignUpForm
 # Import the User model from models
@@ -27,13 +27,15 @@ def signup():
         # Check to see if we already have a User with that username or email
         check_user = db.session.execute(db.select(User).where( (User.username==username) | (User.email==email) )).scalars().all()
         if check_user:
-            print('A user with that username and/or email already exists')
+            flash('A user with that username and/or email already exists')
             return redirect(url_for('signup'))
         # Create a new instance of the User class with the data from the form
         new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
         # Add the new user object to the database
         db.session.add(new_user)
         db.session.commit()
+
+        flash(f"{new_user.username} has been created!")
 
         # Redirect back to the home page
         return redirect(url_for('index'))
