@@ -1,7 +1,9 @@
-from app import app
+from app import app, db
 from flask import render_template, redirect, url_for
 # Import the SingUpForm class from forms
 from app.forms import SignUpForm
+# Import the User model from models
+from app.models import User
 
 # Create our first route
 @app.route('/')
@@ -20,7 +22,13 @@ def signup():
         username = form.username.data
         email = form.email.data
         password = form.password.data
-        print(first_name, last_name, username, email, password)
+        # print(first_name, last_name, username, email, password)
+
+        # Create a new instance of the User class with the data from the form
+        new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
+        # Add the new user object to the database
+        db.session.add(new_user)
+        db.session.commit()
 
         # Redirect back to the home page
         return redirect(url_for('index'))
