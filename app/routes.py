@@ -9,7 +9,8 @@ from app.models import User, Post
 # Create our first route
 @app.route('/')
 def index():
-    posts = db.session.execute(db.select(Post)).scalars().all()
+    # SELECT * FROM post ORDER BY date_created DESC;
+    posts = db.session.execute(db.select(Post).order_by(db.desc(Post.date_created))).scalars().all()
     return render_template('index.html', posts=posts)
 
 # Create a second route
@@ -82,9 +83,10 @@ def create_post():
     if form.validate_on_submit():
         title = form.title.data
         body = form.body.data
+        image_url = form.image_url.data or None
         
         # Create an instance of Post with form data and logged in user's ID
-        new_post = Post(title=title, body=body, user_id=current_user.id)
+        new_post = Post(title=title, body=body, user_id=current_user.id, image_url=image_url)
         # Add to the database
         db.session.add(new_post)
         db.session.commit()
