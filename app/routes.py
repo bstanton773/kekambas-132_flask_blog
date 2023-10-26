@@ -1,8 +1,8 @@
 from app import app, db
 from flask import render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user
-# Import the SingUpForm and LoginForm class from forms
-from app.forms import SignUpForm, LoginForm
+from flask_login import login_user, logout_user, login_required
+# Import the SignUpForm, LoginForm, and PostForm classes from forms
+from app.forms import SignUpForm, LoginForm, PostForm
 # Import the User model from models
 from app.models import User
 
@@ -73,3 +73,9 @@ def logout():
     logout_user()
     flash('You have successfully logged out')
     return redirect(url_for('index'))
+
+@app.route('/create-post')
+@login_required
+def create_post():
+    form = PostForm()
+    return render_template('create_post.html', form=form)

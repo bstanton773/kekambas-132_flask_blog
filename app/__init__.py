@@ -15,6 +15,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # Create an instance of LoginManager to handle authentication
 login = LoginManager(app)
+login.login_view = 'login'
+# login.login_message = 'You have to be logged in to do that you fool!'
 
 
 from . import routes, models
