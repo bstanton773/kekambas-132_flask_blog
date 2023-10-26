@@ -105,3 +105,34 @@ def post_view(post_id):
         flash('That post does not exist')
         return redirect(url_for('index'))
     return render_template('post.html', post=post)
+
+
+@app.route('/posts/<post_id>/edit', methods=["GET", "POST"])
+@login_required
+def edit_post(post_id):
+    post = db.session.get(Post, post_id)
+    if not post:
+        flash('That post does not exist')
+        return redirect(url_for('index'))
+    if current_user != post.author:
+        flash('You can only edit posts you have authored!')
+        return redirect(url_for('post_view', post_id=post_id))
+    # Create an instance of the PostForm
+    form = PostForm()
+
+    # If form submitted, update the post
+    if form.validate_on_submit():
+        # update the post with the for data
+        post.title = form.title.data
+        post.body = form.body.data
+        post.image_url = form.image_url.data
+        # Commit to the database
+        db.session.commit()
+        flash(f'{post.title} has been edited.', 'success')
+        return redirect(url_for('index'))
+
+    # Pre-populate the form with the post's data
+    form.title.data = post.title
+    form.body.data = post.body
+    form.image_url.data = post.image_url
+    return render_template('edit_post.html', post=post, form=form)

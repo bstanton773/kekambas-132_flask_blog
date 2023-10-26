@@ -16,7 +16,7 @@
             <h6 class="card-title">By: {{ post.author.username }}</h6>
             <p class="card-text">{{ post.body }}</p>
             {% if current_user == post.author %}
-                <a href="" class="btn btn-success w-25">Edit</a>
+                <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-success w-25">Edit</a>
                 <a href="" class="btn btn-danger w-25">Delete</a>
             {% endif %}
         </div>
