@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block header %}
+<div class="col-6 offset-3">
+    <img src="{{ post.image_url }}" alt="img-fluid">
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="col">
+    <div class="card text-center">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <h6 class="card-title">By: {{ post.author.username }}</h6>
+            <p class="card-text">{{ post.body }}</p>
+            {% if current_user == post.author %}
+                <a href="" class="btn btn-success w-25">Edit</a>
+                <a href="" class="btn btn-danger w-25">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

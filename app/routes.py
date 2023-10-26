@@ -96,3 +96,12 @@ def create_post():
         return redirect(url_for('index'))
     
     return render_template('create_post.html', form=form)
+
+
+@app.route('/posts/<post_id>')
+def post_view(post_id):
+    post = db.session.get(Post, post_id)
+    if not post:
+        flash('That post does not exist')
+        return redirect(url_for('index'))
+    return render_template('post.html', post=post)
