@@ -13,6 +13,22 @@
 
 {% block content %}
     <div class="col-12">
-        <h5>Posts Will Go Here</h5>
+        {% for p in posts %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="..." class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">{{ p.title }}</h5>
+                    <p class="card-text">{{ p.body }}</p>
+                    <p class="card-text"><small class="text-body-secondary">By {{ p.author.username }}</small></p>
+                    <p class="card-text"><small class="text-body-secondary">{{ p.date_created.strftime('%A %B %d, %Y at %I:%M%p') }}</small></p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

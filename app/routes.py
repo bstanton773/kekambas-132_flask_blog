@@ -9,7 +9,8 @@ from app.models import User, Post
 # Create our first route
 @app.route('/')
 def index():
-    return render_template('index.html')
+    posts = db.session.execute(db.select(Post)).scalars().all()
+    return render_template('index.html', posts=posts)
 
 # Create a second route
 @app.route('/signup', methods=['GET', 'POST'])
