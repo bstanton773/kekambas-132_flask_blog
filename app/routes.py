@@ -136,3 +136,20 @@ def edit_post(post_id):
     form.body.data = post.body
     form.image_url.data = post.image_url
     return render_template('edit_post.html', post=post, form=form)
+
+@app.route('/posts/<post_id>/delete', methods=["GET"])
+@login_required
+def delete_post(post_id):
+    post = db.session.get(Post, post_id)
+    if not post:
+        flash('That post does not exist')
+        return redirect(url_for('index'))
+    if current_user != post.author:
+        flash('You can only delete posts you have authored!')
+        return redirect(url_for('post_view', post_id=post_id))
+    
+    db.session.delete(post)
+    db.session.commit()
+
+    flash(f"{post.title} has been deleted")
+    return redirect(url_for('index'))
