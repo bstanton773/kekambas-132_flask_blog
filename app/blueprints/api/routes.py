@@ -79,3 +79,20 @@ def edit_post(post_id):
             setattr(post, field, data[field])
     db.session.commit()
     return post.to_dict()
+
+# Endpoint to delete an exiting post
+@api.route('/posts/<post_id>', methods=["DELETE"])
+@token_auth.login_required
+def delete_post(post_id):
+    # Get the post from db
+    post = db.session.get(Post, post_id)
+    if post is None:
+        return {'error': f'Post with an ID of {post_id} does not exist'}, 404
+    # Make sure authenticated user is the post author
+    current_user = token_auth.current_user()
+    if post.author != current_user:
+        return {'error': 'You do not have permission to delete this post'}, 403
+    # Delete the post
+    db.session.delete(post)
+    db.session.commit()
+    return {'success': f"{post.title} has been deleted"}
