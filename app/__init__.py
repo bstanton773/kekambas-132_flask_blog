@@ -18,5 +18,8 @@ login = LoginManager(app)
 login.login_view = 'login'
 # login.login_message = 'You have to be logged in to do that you fool!'
 
+# register the api blueprint with our app
+from app.blueprints.api import api
+app.register_blueprint(api)
 
 from . import routes, models
