@@ -1,7 +1,7 @@
 from flask import request
 from . import api
 from app import db
-from app.models import Post
+from app.models import Post, User
 from .auth import basic_auth, token_auth
 
 
@@ -12,6 +12,51 @@ def get_token():
     auth_user = basic_auth.current_user()
     token = auth_user.get_token()
     return {'token': token}
+
+# Endpoing to create a new User
+@api.route('/users', methods=['POST'])
+def create_user():
+    # Check to see that the request body is JSON
+    if not request.is_json:
+        return {'error': 'Your content-type must be application/json'}, 400
+    
+    # Get the data from the request body
+    data = request.json
+
+    # Check to see if all of the required fiels are present
+    required_fields = ['firstName', 'lastName', 'username', 'email', 'password']
+    missing_fields = []
+    for field in required_fields:
+        if field not in data:
+            missing_fields.append(field)
+    if missing_fields:
+        return {'error': f"{', '.join(missing_fields)} must be in the request body"}, 400
+
+    # Get the values from the data
+    first_name = data.get('firstName')
+    last_name = data.get('lastName')
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+
+    # Check if there is already a user with username or email
+    check_user = db.session.execute(db.select(User).where( (User.username==username) | (User.email==email) )).scalars().all()
+    if check_user:
+        return {'error': 'A user with that username and/or email already exists'}, 400
+    # Create a new user
+    new_user = User(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
+    # Add to the database
+    db.session.add(new_user)
+    db.session.commit()
+    # return the dictionary/JSON version of the user
+    return new_user.to_dict(), 201
+
+# Endpoint to get user based on token
+@api.route('/users/me', methods=["GET"])
+@token_auth.login_required
+def get_me():
+    current_user = token_auth.current_user()
+    return current_user.to_dict()
 
 # Endpoint to get all posts
 @api.route('/posts', methods=["GET"])
@@ -48,7 +93,7 @@ def create_post():
     # Get data from the body
     title = data.get('title')
     body = data.get('body')
-    image_url = data.get('image_url')
+    image_url = data.get('imageUrl')
     # Get the user
     current_user = token_auth.current_user()
     
@@ -75,8 +120,11 @@ def edit_post(post_id):
         return {'error': 'You do not have permission to edit this post'}, 403
     data = request.json
     for field in data:
-        if field in {'title', 'body', 'image_url'}:
-            setattr(post, field, data[field])
+        if field in {'title', 'body', 'imageUrl'}:
+            if field == 'imageUrl':
+                setattr(post, 'image_url', data[field])
+            else:
+                setattr(post, field, data[field])
     db.session.commit()
     return post.to_dict()
 

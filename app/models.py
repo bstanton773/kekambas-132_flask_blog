@@ -36,6 +36,15 @@ class User(db.Model, UserMixin):
         self.token_expiration = now + timedelta(hours=1)
         db.session.commit()
         return self.token
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'firstName': self.first_name,
+            'lastName': self.last_name,
+            'email': self.email,
+            'username': self.username,
+        }
         
 
 @login.user_loader
@@ -64,5 +73,6 @@ class Post(db.Model):
             'body': self.body,
             'dateCreated': self.date_created,
             'userId': self.user_id,
-            'imageUrl': self.image_url
+            'imageUrl': self.image_url,
+            'author': self.author.to_dict()
         }
